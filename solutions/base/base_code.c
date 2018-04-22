@@ -49,54 +49,66 @@ void LCS (char *first, char *second, int m, int n){
    }
 
    free(L);
-   printf("%s\n", results);
+  // printf("%s\n", results);
 }
 
-int main(){
+
+void compare_wiki_pages(){
+   int i;
+   for(i = 0; i<WIKI_SIZE - 1; i++){
+      if(i%100 == 0){
+         printf("On iter: %d\n", i);
+      }
+      LCS(wiki_lines[i], wiki_lines[i+1], strlen(wiki_lines[i]), strlen(wiki_lines[i+1]));
+   }
+}
+
+void init_wiki_page(){
    FILE *fp;
- 
-   char line1[WIKI_LINE_SIZE];
-   char line2[WIKI_LINE_SIZE];
 
-  
-   char line [WIKI_LINE_SIZE];
-   size_t len1 = 0;
-   size_t len2 = 0;
+   char line[WIKI_LINE_SIZE];
+   int count = 0;
+   int i;
 
-   ssize_t read;
-   
    fp = fopen("/homes/dan/625/wiki_dump.txt", "r");
    
    if(fp == NULL){
-      perror("UNABLE TO FIND FILE!\n");
-      exit(EXIT_FAILURE);
+      perror("UNABLE TO FIND FILE\n");
+      exit("EXIT_FAILURE");
    }
-
-   int readingLines = 1;
-   int lineCount = 0;
-
-  
-
-   //Copy in the wiki file
-   int count = 0;
+ 
    while( fgets(line, WIKI_LINE_SIZE, fp) != NULL){
       strcpy(wiki_lines[count], line);
       count++;
    }
 
    fclose(fp);
+}
 
-   //int onLine = 0;
-   int i;
-   for(i = 0; i<WIKI_SIZE - 1; i++){
-      LCS(wiki_lines[i], wiki_lines[i+1], strlen(wiki_lines[i]), strlen(wiki_lines[i+1])); 
-   }
+int main(){
+   struct timeval t1, t2, t3, t4, t5;
+   double elapsedTime;
+   int numSlots, myVersion = 1; //base = 1, openmp = 2, pthreads = 3, mpi = 4
+
+   gettimeofday(&t5, NULL); 
+   init_wiki_page();
+   gettimeofday(&t1, NULL);
+   elapsedTime = (t1.tv_sec - t5.tv_sec) * 1000.0; //sec to ms
+   elapsedTime += (t1.tv_usec - t5.tv_usec) / 1000.0; //us to ms
+   printf("Time to load wiki page: %f\n", elapsedTime);
+
+   gettimeofday(&t2, NULL);
+   compare_wiki_pages();   
    
+   gettimeofday(&t3, NULL);
+   elapsedTime = (t3.tv_sec - t2.tv_sec) * 1000.0; //sec to ms
+   elapsedTime += (t3.tv_usec - t2.tv_usec) / 1000.0; //us to ms
+   printf("Time to get LCS: %f\n", elapsedTime);
 
-
-
-
-   if(line1)
-      //free(line1);
+   gettimeofday(&t4, NULL);
+   
+   elapsedTime = (t4.tv_sec - t1.tv_sec) * 1000.0; //sec to ms
+   elapsedTime += (t4.tv_usec - t1.tv_usec) / 1000.0; //us to ms
+   printf("DATA, %d, %s, %f\n", myVersion, getenv("NSLOTS"), elapsedTime);
    exit(EXIT_SUCCESS);
 } 
