@@ -4,7 +4,7 @@
 #include <sys/time.h>
 
 #define MAX(x, y) (((x) > (y)) ? (x) : (y))
-#define WIKI_SIZE 1000000 //The number of lines in the wiki file
+#define WIKI_SIZE 10//1000000 //The number of lines in the wiki file
 #define WIKI_LINE_SIZE 2003 //The number of characters in each line
 
 char wiki_lines[WIKI_SIZE][WIKI_LINE_SIZE];
@@ -73,7 +73,7 @@ void compare_wiki_pages(){
       LCS(wiki_lines[i], wiki_lines[i+1], strlen(wiki_lines[i]), strlen(wiki_lines[i+1]), i); 
    }
 
-   output_final_results();
+ //  output_final_results();
 
 }
 
@@ -91,9 +91,9 @@ void init_wiki_page(){
       exit("EXIT_FAILURE");
    }
  
-   while( fgets(line, WIKI_LINE_SIZE, fp) != NULL){
+   while( fgets(line, WIKI_LINE_SIZE, fp) != NULL && count < WIKI_SIZE){
       strcpy(wiki_lines[count], line);
-      count++;
+      count++; 
    }
 
    fclose(fp);
@@ -120,7 +120,8 @@ int main(){
    printf("Time to get LCS: %f\n", elapsedTime);
 
    gettimeofday(&t4, NULL);
-   
+   output_final_results();   
+
    elapsedTime = (t4.tv_sec - t1.tv_sec) * 1000.0; //sec to ms
    elapsedTime += (t4.tv_usec - t1.tv_usec) / 1000.0; //us to ms
    printf("DATA, %d, %s, %f\n", myVersion, getenv("NSLOTS"), elapsedTime);
