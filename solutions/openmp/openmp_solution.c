@@ -13,7 +13,7 @@ char solution[WIKI_SIZE][WIKI_LINE_SIZE];
 
 int num_threads = 32;
 
-void LCS (char *first, char *second, int m, int n, int myID, int index){
+void LCS (char *first, char *second, int m, int n, int index){
    int i,j;
          
    int (*L)[n+1] = malloc(sizeof(int[m+1][n+1]));
@@ -73,15 +73,9 @@ void compare_wiki_pages(){
    int i;
    
    #pragma omp parallel for
- 
-     
-         for(i = 0; i<WIKI_SIZE - 1; i++){
-           // #pragma omp ordered
-           // {
-                 // if(i%100 == 0)
-                  //   printf("On iter: %d\n", i);
-                   LCS(wiki_lines[i], wiki_lines[i+1], strlen(wiki_lines[i]), strlen(wiki_lines[i+1]), omp_get_thread_num(), i); 
-         }
+   for(i = 0; i<WIKI_SIZE - 1; i++){
+      LCS(wiki_lines[i], wiki_lines[i+1], strlen(wiki_lines[i]), strlen(wiki_lines[i+1]), i); 
+   }
 
    output_final_results();
 

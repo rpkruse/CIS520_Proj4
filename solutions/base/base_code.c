@@ -8,59 +8,73 @@
 #define WIKI_LINE_SIZE 2003 //The number of characters in each line
 
 char wiki_lines[WIKI_SIZE][WIKI_LINE_SIZE];
+char solution[WIKI_SIZE][WIKI_LINE_SIZE];
 
-void LCS (char *first, char *second, int m, int n){
+void LCS (char *first, char *second, int m, int n, int index){
    int i,j;
          
    int (*L)[n+1] = malloc(sizeof(int[m+1][n+1]));
    int len = 0;
    
    int row, col;
- 
-   for(i = 0; i <= m; i++){
-      for(j = 0; j <= n; j++){ 
-         if(i == 0 || j == 0)
-            L[i][j] = 0;
-         else if (first[i-1] == second[j-1]){
-            L[i][j] = L[i-1][j-1] + 1;
-            if(len < L[i][j]){
-               len = L[i][j];
-               row = i;
-               col = j;
+
+   char *results;
+
+   
+  
+      for(i = 0; i <= m; i++){
+         for(j = 0; j <= n; j++){ 
+            if(i == 0 || j == 0)
+               L[i][j] = 0;
+            else if (first[i-1] == second[j-1]){
+               L[i][j] = L[i-1][j-1] + 1;
+               if(len < L[i][j]){
+                  len = L[i][j];
+                  row = i;
+                  col = j;
+               }
+            }else{
+               L[i][j] = 0;
             }
-         }else{
-            L[i][j] = 0;
          }
       }
-   }
 
-   if(len == 0){
-      printf("No common substring\n");
-      return;
-   }
+   //if(len == 0){
+   //   printf("No common substring\n");
+   //   return;
+   //}
 
-   char *results = (char*)malloc((len + 1) * sizeof(char));
+      results = (char*)malloc((len + 1) * sizeof(char));
 
-   while (L[row][col] != 0){
-      results[--len] = first[row - 1];
+      while (L[row][col] != 0){
+         results[--len] = first[row - 1];
 
-      row--;
-      col--;
-   }
+         row--;
+         col--;
+      }
 
-   free(L);
-  // printf("%s\n", results);
+      free(L);
+      //printf("%s\n", results); 
+      //solution[index] = results;
+      strcpy(solution[index], results);
 }
 
+void output_final_results(){
+   int i;
+   for(i = 0; i<WIKI_SIZE; i++){
+      printf("%s\n", solution[i]);
+   }
+}
 
 void compare_wiki_pages(){
    int i;
+      
    for(i = 0; i<WIKI_SIZE - 1; i++){
-      if(i%100 == 0){
-         printf("On iter: %d\n", i);
-      }
-      LCS(wiki_lines[i], wiki_lines[i+1], strlen(wiki_lines[i]), strlen(wiki_lines[i+1]));
+      LCS(wiki_lines[i], wiki_lines[i+1], strlen(wiki_lines[i]), strlen(wiki_lines[i+1]), i); 
    }
+
+   output_final_results();
+
 }
 
 void init_wiki_page(){
