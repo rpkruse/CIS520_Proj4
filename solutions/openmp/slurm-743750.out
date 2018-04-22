@@ -1,2 +1,0 @@
-slurmstepd: error: *** JOB 743750 ON dwarf33 CANCELLED AT 2018-04-22T13:25:52 DUE TO TIME LIMIT ***
-slurmstepd: error: Exceeded step memory limit at some point.
