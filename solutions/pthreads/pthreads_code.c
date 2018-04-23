@@ -4,8 +4,12 @@
 #include <string.h>
 #include <sys/time.h>
 
+/* DONE
+ * 1mil, 500K, 100K, 10K  (5 runs each)
+ * 100K 10K (5 more runs each)
+ */
 #define MAX(x, y) (((x) > (y)) ? (x) : (y))
-#define WIKI_SIZE 1000000 //The number of lines in the wiki file
+#define WIKI_SIZE 100000//500000//100000//1000000 //The number of lines in the wiki file
 #define WIKI_LINE_SIZE 2003 //The number of characters in each line
 #define num_threads 32
 
@@ -198,7 +202,7 @@ int main(){
 
    elapsedTime = (t4.tv_sec - t1.tv_sec) * 1000.0; //sec to ms
    elapsedTime += (t4.tv_usec - t1.tv_usec) / 1000.0; //us to ms
-   printf("DATA, %d, %s, %f\n", myVersion, getenv("NSLOTS"), elapsedTime);
+   printf("DATA, %d, %d, %d, %s, %f\n", myVersion, num_threads, WIKI_SIZE, getenv("NSLOTS"), elapsedTime);
 
    pthread_mutex_destroy(&wiki_lock);
    pthread_exit(NULL);

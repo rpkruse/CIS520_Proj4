@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <sys/time.h>
-#include "mpi.h"
+#include <mpi.h>
 #define MAX(x, y) (((x) > (y)) ? (x) : (y))
 #define WIKI_SIZE 10//1000000 //The number of lines in the wiki file
 #define WIKI_LINE_SIZE 2003 //The number of characters in each line

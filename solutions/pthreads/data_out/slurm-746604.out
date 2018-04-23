@@ -1,0 +1,1 @@
+/var/spool/slurm/d/job746604/slurm_script: line 5: 47279 Segmentation fault      /homes/rpkruse/cis520/proj4/solutions/pthreads/output.out

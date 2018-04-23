@@ -1,0 +1,1 @@
+/var/spool/slurm/d/job746572/slurm_script: line 5: 45039 Segmentation fault      /homes/rpkruse/cis520/proj4/solutions/openmp/output.out
