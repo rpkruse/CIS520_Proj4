@@ -9,7 +9,7 @@
  * 100K 10K (5 more runs each)
  */
 #define MAX(x, y) (((x) > (y)) ? (x) : (y))
-#define WIKI_SIZE 10000//500000//100000//1000000 //The number of lines in the wiki file
+#define WIKI_SIZE 100000//500000//100000//1000000 //The number of lines in the wiki file
 #define WIKI_LINE_SIZE 2003 //The number of characters in each line
 #define num_threads 32
 

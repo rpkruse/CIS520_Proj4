@@ -5,7 +5,7 @@
 #include <sys/time.h>
 
 #define MAX(x, y) (((x) > (y)) ? (x) : (y))
-#define WIKI_SIZE 10000//500000//100000//1000000 //The number of lines in the wiki file
+#define WIKI_SIZE 500000//500000//100000//1000000 //The number of lines in the wiki file
 #define WIKI_LINE_SIZE 2003 //The number of characters in each line
 
 int wiki_index = -1;

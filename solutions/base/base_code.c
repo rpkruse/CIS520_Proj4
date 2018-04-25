@@ -8,7 +8,7 @@
  *
  */
 #define MAX(x, y) (((x) > (y)) ? (x) : (y))
-#define WIKI_SIZE 1000000//1000000 //The number of lines in the wiki file
+#define WIKI_SIZE 100000//1000000 //The number of lines in the wiki file
 #define WIKI_LINE_SIZE 2003 //The number of characters in each line
 
 char wiki_lines[WIKI_SIZE][WIKI_LINE_SIZE];
