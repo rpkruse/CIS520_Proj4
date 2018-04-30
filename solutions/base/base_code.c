@@ -3,10 +3,6 @@
 #include <string.h>
 #include <sys/time.h>
 
-/* DONE
- * 10K 100K 500K (5 times each)
- *
- */
 #define MAX(x, y) (((x) > (y)) ? (x) : (y))
 #define WIKI_SIZE 100000//1000000 //The number of lines in the wiki file
 #define WIKI_LINE_SIZE 2003 //The number of characters in each line
@@ -14,6 +10,14 @@
 char wiki_lines[WIKI_SIZE][WIKI_LINE_SIZE];
 char solution[WIKI_SIZE][WIKI_LINE_SIZE];
 
+/*
+ * This method finds the LCS of two given strings and adds it to a global array "solution"
+ * @param char *first: - The first string to compare
+ * @param char *second:- The second string to compare
+ * @param int m:- The length of the first string
+ * @param int n:- The length of the second string
+ * @param int index:- The index we are currently on in the solution array
+ */
 void LCS (char *first, char *second, int m, int n, int index){
    int i,j;
          
@@ -24,45 +28,43 @@ void LCS (char *first, char *second, int m, int n, int index){
 
    char *results;
 
-   
-  
-      for(i = 0; i <= m; i++){
-         for(j = 0; j <= n; j++){ 
-            if(i == 0 || j == 0)
-               L[i][j] = 0;
-            else if (first[i-1] == second[j-1]){
-               L[i][j] = L[i-1][j-1] + 1;
-               if(len < L[i][j]){
-                  len = L[i][j];
-                  row = i;
-                  col = j;
-               }
-            }else{
-               L[i][j] = 0;
+   //Compute LCS store in local matrix
+   for(i = 0; i <= m; i++){
+      for(j = 0; j <= n; j++){ 
+         if(i == 0 || j == 0)
+            L[i][j] = 0;
+         else if (first[i-1] == second[j-1]){
+            L[i][j] = L[i-1][j-1] + 1;
+            if(len < L[i][j]){
+               len = L[i][j];
+               row = i;
+               col = j;
             }
+         }else{
+            L[i][j] = 0;
          }
       }
+   }
 
-   //if(len == 0){
-   //   printf("No common substring\n");
-   //   return;
-   //}
+   results = (char*)malloc((len + 1) * sizeof(char));
 
-      results = (char*)malloc((len + 1) * sizeof(char));
+   //Pull the LCS from the local matrix
+   while (L[row][col] != 0){
+      results[--len] = first[row - 1];
+      row--;
+      col--;
+   }
 
-      while (L[row][col] != 0){
-         results[--len] = first[row - 1];
+   free(L);
 
-         row--;
-         col--;
-      }
-
-      free(L);
-      //printf("%s\n", results); 
-      //solution[index] = results;
-      strcpy(solution[index], results);
+   //Save the solution into our solution array at index index
+   strcpy(solution[index], results);
 }
 
+/*
+ * This method is called at the end, it outputs the results stored in
+ * the solution array
+ */
 void output_final_results(){
    int i;
    for(i = 0; i<WIKI_SIZE; i++){
@@ -70,17 +72,20 @@ void output_final_results(){
    }
 }
 
+/*
+ * This method is called when we have read the wiki pages into our global array, it will compare the i and i+1 lines
+ */
 void compare_wiki_pages(){
    int i;
       
    for(i = 0; i<WIKI_SIZE - 1; i++){
       LCS(wiki_lines[i], wiki_lines[i+1], strlen(wiki_lines[i]), strlen(wiki_lines[i+1]), i); 
    }
-
- //  output_final_results();
-
 }
 
+/*
+ * This method reads the file and stores the results into our global array
+ */
 void init_wiki_page(){
    FILE *fp;
 
